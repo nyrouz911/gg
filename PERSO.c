@@ -1,18 +1,38 @@
+/**
+*@file PERSO.c
+*@author MIGUEL ONANA
+*@version 1.0
+*@date 28/03/2021
+
+*/
+
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <stdio.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
 #include "PERSO.h"
 #include <math.h>
 
+
+/**
+* @brief initialize player, attributes player number(initialise le personnage et lui attribut un numero de joueur)
+* @param p le personnage
+* @param num_perso le numero de joueur(joueur 1,joueur 2,etc)
+* @return nothing 
+*/
 void init(Personnage *p,int num_perso)
 {
     p->player_number=num_perso;
 }
 
-
+/**
+* @brief initialize player's score,lives and position(initialise le score ,le nombre de vie et la position du personnage)
+* @param p le personnage
+* @param ecran the screen(l'ecran)
+* @return nothing 
+*/
 void init_perso(Personnage *p,SDL_Surface *ecran)
 {
     int vitesse_max=1;
@@ -27,7 +47,12 @@ void init_perso(Personnage *p,SDL_Surface *ecran)
     p->acceleration=0;
 }
 
-
+/**
+* @brief blit's players information
+* @param p le personnage
+* @param ecran the screen(l'ecran)
+* @return nothing 
+*/
 void afficher_perso(Personnage p,SDL_Surface *ecran)
 {
     TTF_Font *police=NULL;
@@ -38,7 +63,7 @@ void afficher_perso(Personnage p,SDL_Surface *ecran)
     int i;
 
     police=TTF_OpenFont("police.ttf",20);
-    image_vie=IMG_Load("vie.jpg");
+    image_vie=IMG_Load("vie.png");
 
 
     sprintf(player_number,"PLAYER %d",p.player_number);
@@ -72,7 +97,7 @@ void afficher_perso(Personnage p,SDL_Surface *ecran)
     }
 
 
-    SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
+    //SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
     SDL_BlitSurface(image_player_num,NULL,ecran,&position_num_player);
     for(i=0; i<p.nombre_vie; i++)
     {
@@ -83,7 +108,12 @@ void afficher_perso(Personnage p,SDL_Surface *ecran)
     SDL_BlitSurface(p.image_actuel,&p.position_sprite,ecran,&p.position);
 }
 
-
+/**
+* @brief move player(deplacer le personnage)
+* @param p le personnage
+* @param dt time(le temps)
+* @return nothing 
+*/
 void deplacer_perso(Personnage *p,int dt)
 {
     int dx;
@@ -103,22 +133,28 @@ void deplacer_perso(Personnage *p,int dt)
     p->action=-1;*/
 }
 
+
+/**
+* @brief load image resources into animation array(charger les images dans le tableau d'animation)
+* @param ANIMATION animation array(tableau d'animations)
+* @return nothing 
+*/
 void charger_image_animation(animation ANIMATION[])
 {
     /*marcher vres la droite*/
-    ANIMATION[marcher_droite].sprite_sheet=IMG_Load("sprite_marcher_droite.png");
-    ANIMATION[marcher_droite].largeur=63;
+    ANIMATION[marcher_droite].sprite_sheet=IMG_Load("marcher_droite.png");
+    ANIMATION[marcher_droite].largeur=100;
     ANIMATION[marcher_droite].x_max=ANIMATION[marcher_droite].sprite_sheet->w;
     ANIMATION[marcher_droite].num_sprite=marcher_droite;
-    ANIMATION[marcher_droite].nombre_image=9;
+    ANIMATION[marcher_droite].nombre_image=7;
 
 
     /*marcher vres la gauche*/
-    ANIMATION[marcher_gauche].sprite_sheet=IMG_Load("sprite_marcher_gauche.png");
-    ANIMATION[marcher_gauche].largeur=61;
+    ANIMATION[marcher_gauche].sprite_sheet=IMG_Load("marcher_gauche.png");
+    ANIMATION[marcher_gauche].largeur=100;
     ANIMATION[marcher_gauche].x_max=ANIMATION[marcher_gauche].sprite_sheet->w;
     ANIMATION[marcher_gauche].num_sprite=marcher_gauche;
-    ANIMATION[marcher_gauche].nombre_image=9;
+    ANIMATION[marcher_gauche].nombre_image=7;
 }
 
 
@@ -152,7 +188,11 @@ void initialise_entity(Personnage *p,animation ANIMATION[])
     //p->direction=-1;
 }
 
-
+/**
+* @brief animates player from spritessheets
+* @param p le personnage
+* @return nothing 
+*/
 void animer_perso(Personnage *p)
 {
     animation ANIMATION[10];
@@ -178,6 +218,7 @@ void saut(Personnage *p)
     else
         p->position.y-=60;
 
+    p->image_actuel=NULL;
     p->direction=-1;
     p->action_precedente=p->action;
     p->action=-1;

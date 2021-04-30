@@ -1,3 +1,12 @@
+/**
+*@file PERSO.h
+*@author MIGUEL ONANA
+*@version 1.0
+*@date 28/03/2021
+
+*/
+
+
 #ifndef PERSO_H_INCLUDED
 #define PERSO_H_INCLUDED
 
@@ -8,9 +17,11 @@
 #define descendre 3
 enum {gauche,droite,haut,bas}; //les directions
 
-/*enum {courrir,frapper,marcher}; //les actions*/
 
-
+/**
+*@struct personnage
+*@brief structure du personnage
+*/
 typedef struct
 {
     int nombre_vie;//le nombre de vie du personnage
@@ -26,7 +37,10 @@ typedef struct
     int acceleration;//valeur de l'acceleration du personnage
 } Personnage;
 
-
+/**
+*@struct animation
+*@brief structure d'une animation
+*/
 typedef struct
 {
     SDL_Surface *sprite_sheet;//spritesheet
